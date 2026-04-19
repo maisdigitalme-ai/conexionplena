@@ -598,13 +598,7 @@
                 successMsg.style.display = 'block';
                 // Redirecionar pro checkout com cupom após 2 segundos
                 setTimeout(function() {
-                    var a = document.createElement('a');
-                    a.href = 'https://pay.hotmart.com/X105452123L?checkoutMode=10';
-                    a.rel = 'noreferrer noopener';
-                    a.target = '_blank';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
+                    window.location.href = 'https://pay.hotmart.com/X105452123L?checkoutMode=10';
                 }, 2000);
             }, 800);
 
