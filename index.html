@@ -608,7 +608,10 @@
                 }).catch(function() {});
             } catch(err) {}
 
-            window.location.href = 'https://pay.hotmart.com/X105452123L?checkoutMode=10';
+            // Aguarda 400ms para garantir que webhook e CAPI disparem antes do redirect
+            setTimeout(function() {
+                window.location.href = 'https://pay.hotmart.com/X105452123L?checkoutMode=10';
+            }, 400);
 
             return false;
         }
