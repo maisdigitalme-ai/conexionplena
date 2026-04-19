@@ -17,10 +17,18 @@
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '1316829573661795');
+    fbq('init', '1127238215880714');
+    fbq('init', '824224383541404');
     fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=1316829573661795&ev=PageView&noscript=1"
+    /></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1127238215880714&ev=PageView&noscript=1"
+    /></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=824224383541404&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Facebook Pixel Code -->
     <script
@@ -559,26 +567,33 @@
                 });
             }
 
-            // Server-side CAPI - InitiateCheckout event
-            try {
-                fetch('https://graph.facebook.com/v18.0/1316829573661795/events', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        data: [{
-                            event_name: 'InitiateCheckout',
-                            event_time: Math.floor(Date.now() / 1000),
-                            action_source: 'website',
-                            event_source_url: window.location.href,
-                            user_data: {
-                                ph: [fullPhone],
-                                client_user_agent: navigator.userAgent
-                            }
-                        }],
-                        access_token: 'EAAUf1eVb4fkBRGrhLbQZAnXRPKUZA3OjrtCsnUlh0htEmhfTNKalZCJpOIKZCczp1kucoxRrhm6bC9dZBXiZAytnIGbzf7IXClSZApZCGPekzSuuSrLqWZC9BeZAZCZAPZBZAbZBtTzfYZAkBO66oHuQFp3usAZBgpXlQVQ2BWJgwAfS9CKkjSC4ZCqrByy3IBlspRWjr7HDNU5gZDZD'
-                    })
-                }).catch(function() {});
-            } catch(err) {}
+            // Server-side CAPI - InitiateCheckout event (3 pixels)
+            var capiPixels = [
+                { id: '1316829573661795', token: 'EAAUf1eVb4fkBRGrhLbQZAnXRPKUZA3OjrtCsnUlh0htEmhfTNKalZCJpOIKZCczp1kucoxRrhm6bC9dZBXiZAytnIGbzf7IXClSZApZCGPekzSuuSrLqWZC9BeZAZCZAPZBZAbZBtTzfYZAkBO66oHuQFp3usAZBgpXlQVQ2BWJgwAfS9CKkjSC4ZCqrByy3IBlspRWjr7HDNU5gZDZD' },
+                { id: '1127238215880714', token: 'EAAUf1eVb4fkBRJVNXrStscamZC9YcyvEhJGoKqMzgPMLzb4pmFzHDomf1WyjakdbvQZAuDHXDCeHgSA2mduBsaCsiapUY8bchr8jr7ZBRxO6JvSatc6vFQ6hDZAwZBDhUZCWCZB58QK1xOAbKOfMyVDZCInEzMdFtoP38XR0T5N1l64IhuOtyoZAKL505MYaoPZACCdwZDZD' },
+                { id: '824224383541404', token: 'EAAUf1eVb4fkBRC1cIQNrUBqV9vouNFjqrf6T7tusN8Nf8doPhVYZCZBLUoLZArhfoKcd7kgZBYVUu00jCBuFGSNQUgWzZASq9rFrifiFcDf6RuMHKvLn7Vcb9xWXTuRlr7UZBLdYnGGbedTQZCWgSJZBjJjGQcXV9VZCL8X9WQlUfgJ5QyZAOZBOXcoO5B7xHDQZBUe0GgZDZD' }
+            ];
+            var capiPayload = {
+                data: [{
+                    event_name: 'InitiateCheckout',
+                    event_time: Math.floor(Date.now() / 1000),
+                    action_source: 'website',
+                    event_source_url: window.location.href,
+                    user_data: {
+                        ph: [fullPhone],
+                        client_user_agent: navigator.userAgent
+                    }
+                }]
+            };
+            capiPixels.forEach(function(px) {
+                try {
+                    fetch('https://graph.facebook.com/v18.0/' + px.id + '/events', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(Object.assign({}, capiPayload, { access_token: px.token }))
+                    }).catch(function() {});
+                } catch(err) {}
+            });
 
             try {
                 fetch(WEBHOOK_URL, {
