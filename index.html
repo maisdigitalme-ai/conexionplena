@@ -16,11 +16,11 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1127238215880714');
+    fbq('init', '1316829573661795');
     fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1127238215880714&ev=PageView&noscript=1"
+    src="https://www.facebook.com/tr?id=1316829573661795&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Facebook Pixel Code -->
     <script
@@ -460,7 +460,7 @@
             { code: 'PR', flag: '\u{1F1F5}\u{1F1F7}', dial: '+1', name: 'Puerto Rico' }
         ];
 
-        var selectedCountry = countries[0];
+        var selectedCountry = countries.find(function(c) { return c.code === 'BR'; }) || countries[0];
 
         function buildDropdown() {
             var dropdown = document.getElementById('countryDropdown');
@@ -500,17 +500,15 @@
         // Detectar país ANTES de construir o dropdown
         (async function detectCountry() {
             try {
-                var res = await fetch('https://ipapi.co/json/');
+                var res = await fetch('https://ip-api.com/json/?fields=countryCode');
                 var data = await res.json();
-                var code = data.country_code;
+                var code = data.countryCode;
                 var found = countries.find(function(c) { return c.code === code; });
                 if (found) {
                     selectedCountry = found;
-                } else if (data.country_calling_code) {
-                    selectedCountry = { code: code, flag: '\u{1F30E}', dial: data.country_calling_code, name: data.country_name || 'Otro' };
                 }
             } catch(e) {
-                // Se falhar, mantém Colômbia como padrão
+                // Se falhar, mantém Brasil como padrão
             }
             // Construir dropdown DEPOIS de detectar o país
             buildDropdown();
@@ -563,7 +561,7 @@
 
             // Server-side CAPI - InitiateCheckout event
             try {
-                fetch('https://graph.facebook.com/v18.0/1127238215880714/events', {
+                fetch('https://graph.facebook.com/v18.0/1316829573661795/events', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -577,7 +575,7 @@
                                 client_user_agent: navigator.userAgent
                             }
                         }],
-                        access_token: 'EAAUf1eVb4fkBRJVNXrStscamZC9YcyvEhJGoKqMzgPMLzb4pmFzHDomf1WyjakdbvQZAuDHXDCeHgSA2mduBsaCsiapUY8bchr8jr7ZBRxO6JvSatc6vFQ6hDZAwZBDhUZCWCZB58QK1xOAbKOfMyVDZCInEzMdFtoP38XR0T5N1l64IhuOtyoZAKL505MYaoPZACCdwZDZD'
+                        access_token: 'EAAUf1eVb4fkBRGrhLbQZAnXRPKUZA3OjrtCsnUlh0htEmhfTNKalZCJpOIKZCczp1kucoxRrhm6bC9dZBXiZAytnIGbzf7IXClSZApZCGPekzSuuSrLqWZC9BeZAZCZAPZBZAbZBtTzfYZAkBO66oHuQFp3usAZBgpXlQVQ2BWJgwAfS9CKkjSC4ZCqrByy3IBlspRWjr7HDNU5gZDZD'
                     })
                 }).catch(function() {});
             } catch(err) {}
@@ -600,7 +598,7 @@
                 successMsg.style.display = 'block';
                 // Redirecionar pro checkout com cupom após 2 segundos
                 setTimeout(function() {
-                    window.location.href = 'https://go.centerpag.com/PPU38CQAIKH?ppc=PPCP43DL3Q9S';
+                    window.location.href = 'https://pay.hotmart.com/X105452123L?checkoutMode=10';
                 }, 2000);
             }, 800);
 
